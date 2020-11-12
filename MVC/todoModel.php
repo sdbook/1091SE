@@ -1,11 +1,10 @@
 <?php
 require_once("dbconnect.php");
 
-function addJob($jobProfile){
-	//check the $jobProfile first
-	//insert into DB with $jobProfile
-	
-	//return T/F
+function addJob($title,$msg, $urgent) {
+	global $conn;
+	$sql = "insert into todo (title, content,urgent, addTime) values ('$title','$msg', '$urgent', NOW());";
+	mysqli_query($conn, $sql) or die("Insert failed, SQL query error"); //執行SQL	
 }
 
 function cancelJob($jobID) {
@@ -15,8 +14,10 @@ function cancelJob($jobID) {
 	//return T/F
 }
 
-function updateJob($jobID,$jobProfile) {
-	
+function updateJob($id,$title,$msg, $urgent) {
+	global $conn;
+	$sql = "update todo set title='$title', content='$msg', urgent='$urgent' where id=$id;";
+	mysqli_query($conn, $sql) or die("Insert failed, SQL query error"); //執行SQL
 }
 
 function getJobList($bossMode) {
@@ -49,4 +50,11 @@ function setClosed($jobID) {
 	mysqli_query($conn,$sql);
 }
 
+function getJobDetail($id) {
+	global $conn;
+	$sql = "select id, title, content, urgent from todo where id=$id;";
+	$result=mysqli_query($conn,$sql) or die("DB Error: Cannot retrieve message.");
+	$rs=mysqli_fetch_assoc($result);
+	return $rs;
+}
 ?>
