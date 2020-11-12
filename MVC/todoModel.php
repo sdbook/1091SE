@@ -3,7 +3,7 @@ require_once("dbconnect.php");
 
 function addJob($title,$msg, $urgent) {
 	global $conn;
-	$sql = "insert into todo (title, content,urgent, addTime) values ('$title','$msg', '$urgent', NOW());";
+	$sql = "insert into todo (title, content,urgent, addTime, status) values ('$title','$msg', '$urgent', NOW(),0);";
 	mysqli_query($conn, $sql) or die("Insert failed, SQL query error"); //執行SQL	
 }
 
