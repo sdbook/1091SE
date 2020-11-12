@@ -21,9 +21,12 @@ return $isValid;
 }
 
 
-function getUserPwd($userName) {
-	$password="You guess!!";
-	return $password;
+
+function getUserPwd() {
+	global $conn;
+	$sql = "select * from user;";
+	$result=mysqli_query($conn,$sql) or die("DB Error: Cannot retrieve message.");
+	return $result;
 }
 
 function setUserPassword($userName){
