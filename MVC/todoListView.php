@@ -34,7 +34,7 @@ $jobStatus = array('未完成','已完成','已結案','已取消');
 <p>my Todo List !! </p>
 <hr />
 <div><?php echo $msg; ?></div><hr>
-<a href="loginForm.php">login</a> | <a href="todoAddForm.php">Add Task</a> <br>
+<a href="loginForm.php">login</a> | <a href="todoEditForm.php?id=-1">Add Task</a> <br>
 <table width="200" border="1">
   <tr>
     <td>id</td>
