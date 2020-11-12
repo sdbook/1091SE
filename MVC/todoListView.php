@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (! isset($_SESSION['uID']) or $_SESSION['uID']<="") {
+	header("Location: loginForm.php");
+} 
+if ($_SESSION['uID']=='boss'){
+	$bossMode = 1;
+} else {
+	$bossMode=0;
+}
 require("todoModel.php");
 if (isset($_GET['m'])){
 	$msg="<font color='red'>" . $_GET['m'] . "</font>";
@@ -7,11 +15,7 @@ if (isset($_GET['m'])){
 	$msg="Good morning";
 }
 
-if (isset($_GET['boss'])){
-	$bossMode = (int)$_GET['boss'];
-} else {
-	$bossMode=0;
-}
+
 
 $result=getJobList($bossMode);
 $jobStatus = array('未完成','已完成','已結案','已取消');
@@ -30,7 +34,7 @@ $jobStatus = array('未完成','已完成','已結案','已取消');
 <p>my Todo List !! </p>
 <hr />
 <div><?php echo $msg; ?></div><hr>
-<a href="todoRpt.php">工作報表</a> | <a href="todoAddForm.php">Add Task</a> <br>
+<a href="loginForm.php">login</a> | <a href="todoAddForm.php">Add Task</a> <br>
 <table width="200" border="1">
   <tr>
     <td>id</td>
