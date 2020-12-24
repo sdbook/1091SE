@@ -82,7 +82,8 @@ while (	$rs=mysqli_fetch_assoc($result)) {
 				echo "<a href='todoEditForm.php?id={$rs['id']}'>Edit</a>  ";	
 				echo "<a href='todoSet.php?act=cancel&id={$rs['id']}'>Cancel</a>  " ;
 			} else {
-				echo "<a href='todoSet.php?act=finish&id={$rs['id']}'>Finish</a>  ";
+				//echo "<a href='todoSet.php?act=finish&id={$rs['id']}'>Finish</a>  ";
+				echo "<button onclick='setFinished({$rs['id']})'>Finish</button>";
 			}
 
 			break;
