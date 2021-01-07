@@ -1,0 +1,145 @@
+<html><head>
+<style type="text/css">
+.keys {
+  width: 50px;
+  height:100px;
+background-color: yellow;
+  display:inline-block;
+}
+</style>
+
+<script type="text/javascript" src="jquery.js"></script>
+
+</head>
+<body onload="doInit()">
+<div class="keys" onmouseenter="send(0)" onmouseout="send(-1)" >0</div>
+<div class="keys" onmouseenter="send(1)" onmouseout="send(-1)" >1</div>
+<div class="keys" onmouseenter="send(2)" onmouseout="send(-1)" >2</div>
+<div class="keys" onmouseenter="send(3)" onmouseout="send(-1)" >3</div>
+<div class="keys" onmouseenter="send(4)" onmouseout="send(-1)" >4</div>
+<div class="keys" onmouseenter="send(5)" onmouseout="send(-1)" >5</div>
+<div class="keys" onmouseenter="send(6)" onmouseout="send(-1)" >6</div>
+<div class="keys" onmouseenter="send(7)" onmouseout="send(-1)" >7</div>
+<div class="keys" onmouseenter="send(8)" onmouseout="send(-1)" >8</div>
+<div class="keys" onmouseenter="send(9)" onmouseout="send(-1)" >9</div>
+<div class="keys" onmouseenter="send(10)" onmouseout="send(-1)" >10</div>
+<div class="keys" onmouseenter="send(11)" onmouseout="send(-1)" >11</div>
+<hr>
+channel: <input type="text" id="channel" value="0">
+<script>
+//prepare 3 audio objects
+var audio=[];
+audio[0] = new Audio();
+audio[1] = new Audio();
+audio[2] = new Audio();
+
+audio[0].loop = true;
+audio[1].loop = true;
+audio[2].loop = true;
+
+i = 0;
+var notes = new Array(
+"Piano11.mp3",
+"Piano12.mp3",
+"Piano13.mp3",
+"Piano14.mp3",
+"Piano15.mp3",
+"Piano16.mp3",
+"Piano17.mp3",
+"Piano18.mp3",
+"Piano19.mp3",
+"Piano110.mp3",
+"Piano111.mp3",
+"Piano112.mp3",
+"Piano113.mp3",
+"Piano114.mp3",
+"Piano115.mp3",
+"Piano116.mp3",
+"Piano117.mp3",
+"Piano118.mp3",
+"Piano119.mp3",
+"Piano120.mp3",
+"Piano121.mp3",
+"Piano122.mp3",
+"Piano123.mp3",
+"Piano124.mp3",
+"Piano125.mp3",
+);
+//audio.volume = 0.3;
+
+
+//audio.currentTime = 0;
+//isPaused=audio.paused;
+
+function playNow(ch,i) {
+	if(ch>3) ch=3;
+	//if (i >= notes.length) i=notes.length-1;
+	//if (i <0) i=0;
+	//if (!audio.paused) audio.pause();
+	audio[ch].src = "notes\\"+notes[i];
+	audio[ch].play();
+}
+
+function pauseNow(ch) {
+	if(ch>3) ch=3;
+	audio[ch].pause();
+}
+		 	var s;
+			function log_msg(msg) {
+				console.log(msg);
+			}
+			
+			function doInit() {
+				try {
+					var host = "ws://10.32.20.244:4545/";
+					/*if(window.location.hostname) {
+						host = "ws://" + window.location.hostname + ":4545/";
+					}*/
+					
+					s = new WebSocket(host);
+					
+					s.onopen = function (e) { log_msg("connected..."); };
+					s.onclose = function (e) { log_msg("connection closed."); };
+					s.onerror = function (e) { log_msg("connection error."); };
+					s.onmessage = function (e) { 
+						//log_msg("message: " + e.data); 
+						strs = e.data.split(',');
+						if(strs[0]=='PLAY') {
+							ch=parseInt(strs[1]);
+							i=parseInt(strs[2]);
+							playNow(ch,i);
+						} else if(strs[0]=="PAUSE") {
+							ch=parseInt(strs[1]);
+							pauseNow(ch);
+						}
+					};
+				} catch (ex) {
+					log_msg("connection exception:" + ex);
+				}
+			}
+			
+			
+		function send(i) {
+			ch=$("#channel").val();
+			if(i>=0) {
+				s.send("PLAY,"+ch+","+i);
+			} else {
+				s.send("PAUSE,"+ch);
+			}
+		}
+/*			
+$(function(){
+	$(document).mousemove(function(e){
+		//var offset = $("#box").offset();
+		//leftP= e.pageX - offset.left,
+		//topP= e.pageY - offset.top
+		syncMousePosition(e.pageX,e.pageY);
+	});
+});
+*/
+
+
+
+</script>
+</body>
+</html>
